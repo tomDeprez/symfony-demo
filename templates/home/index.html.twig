@@ -3,51 +3,7 @@
 {% block title %}Boutique{% endblock %}
 
 {% block stylesheets %}
-<style>
-    .product-card {
-        border-radius: 20px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        padding: 15px;
-        margin: 15px 0;
-        transition: transform 0.3s ease;
-        background: #fff;
-    }
-
-    .product-card:hover {
-        transform: translateY(-5px);
-    }
-
-    .product-img {
-        border-radius: 15px;
-        max-height: 200px;
-        object-fit: cover;
-        width: 100%;
-    }
-
-    .add-to-cart-btn {
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 10px;
-        padding: 10px 15px;
-        margin-top: 10px;
-        transition: background-color 0.2s ease;
-        width: 100%;
-    }
-
-    .add-to-cart-btn:hover {
-        background-color: #0056b3;
-    }
-
-    .product-info {
-        text-align: center;
-    }
-
-    #cart-count {
-        font-weight: bold;
-        color: #007bff;
-    }
-</style>
+<link rel="stylesheet" href="css/panier.css">
 {% endblock %}
 
 {% block body %}
