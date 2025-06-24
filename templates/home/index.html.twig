@@ -1,27 +1,115 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!
+{% block title %}Boutique{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .product-card {
+        border-radius: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        padding: 15px;
+        margin: 15px 0;
+        transition: transform 0.3s ease;
+        background: #fff;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .product-img {
+        border-radius: 15px;
+        max-height: 200px;
+        object-fit: cover;
+        width: 100%;
+    }
+
+    .add-to-cart-btn {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 15px;
+        margin-top: 10px;
+        transition: background-color 0.2s ease;
+        width: 100%;
+    }
+
+    .add-to-cart-btn:hover {
+        background-color: #0056b3;
+    }
+
+    .product-info {
+        text-align: center;
+    }
+
+    #cart-count {
+        font-weight: bold;
+        color: #007bff;
+    }
+</style>
 {% endblock %}
 
-
-{% block stylesheets %}{% endblock %}
-
-
 {% block body %}
+<div class="container mt-4">
+    <h3>Panier : <span id="cart-count">0</span> article(s)</h3>
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-3">
+                <div class="product-card">
+                    <img class="product-img" src="https://cdn.shopify.com/s/files/1/2358/2817/products/dunk-low-next-nature-black-white-330678.png?v=1638813895" alt="{{ product.name }}">
+                    <div class="product-info mt-3">
+                        <h5>{{ product.name }}</h5>
+                        <p class="text-muted">{{ product.price }} €</p>
+                        <button 
+                            class="add-to-cart-btn"
+                            data-id="{{ product.id }}"
+                            data-name="{{ product.name }}"
+                            data-price="{{ product.price }}"
+                        >Ajouter au panier</button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
 
-	<div class="container">
-		<div class="row">
-			{% for product in products %}
-				<div class="col-3 border">
-					<div class="row">
-						<img class="col" height="200" src="https://cdn.shopify.com/s/files/1/2358/2817/products/dunk-low-next-nature-black-white-330678.png?v=1638813895" alt="" class="col">
-						<button>Ajouter au panier</button>
-						<p>{{product.price}}€</p>
-						<p>{{product.name}}</p>
-					</div>
-				</div>
-			{% endfor %}			
-		</div>
-	</div>
+{% block javascripts %}
+<script>
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
 
+    function updateCartCount() {
+        document.getElementById('cart-count').textContent = cart.reduce((acc, item) => acc + item.quantity, 0);
+    }
+
+    function saveCart() {
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
+    }
+
+    function addToCart(product) {
+        const existing = cart.find(p => p.id === product.id);
+        if (existing) {
+            existing.quantity += 1;
+        } else {
+            product.quantity = 1;
+            cart.push(product);
+        }
+        saveCart();
+    }
+
+    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const product = {
+                id: button.dataset.id,
+                name: button.dataset.name,
+                price: parseFloat(button.dataset.price)
+            };
+            addToCart(product);
+        });
+    });
+
+    updateCartCount();
+</script>
 {% endblock %}
