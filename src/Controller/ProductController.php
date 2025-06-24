@@ -28,9 +28,10 @@ final class ProductController extends AbstractController
     #[Route('/product/create', name: 'product_create')]
     public function createProduct(Request $request, ProductRepository $productRepository): Response
     {
+        $product = new product();
 
         if ($request->isMethod('POST')) {
-            $product = new product();
+
 
             $product->setName($request->request->get("name"));
             $product->setDescription($request->request->get("description"));
@@ -41,7 +42,7 @@ final class ProductController extends AbstractController
             dump($product);
         }
 
-        return $this->render('product/index.html.twig');
+        return $this->render('product/index.html.twig', ['product' => $product]);
     }
 
     #[Route('/product/update/{product}', name: 'product_update')]
@@ -50,7 +51,6 @@ final class ProductController extends AbstractController
 
         dump($product);
         if ($request->isMethod('POST')) {
-            $product = new product();
 
             $product->setName($request->request->get("name"));
             $product->setDescription($request->request->get("description"));
@@ -67,10 +67,11 @@ final class ProductController extends AbstractController
 
 
     #[Route('/product/delete/{product}', name: 'product_delete')]
-    public function deleteProduct(Product $product): Response
+    public function deleteProduct(Product $product, ProductRepository $productRepository): Response
     {
 
-        dump($product);
+        $productRepository->remove($product, true);
+
 
 
         return $this->render('product/index.html.twig', ['product' => $product]);
