@@ -76,7 +76,7 @@ class Statuts
     {
         if (!$this->Commande->contains($commande)) {
             $this->Commande->add($commande);
-            $commande->setStatuts($this);
+            $commande->setStatut($this);
         }
 
         return $this;
@@ -86,8 +86,8 @@ class Statuts
     {
         if ($this->Commande->removeElement($commande)) {
             // set the owning side to null (unless already changed)
-            if ($commande->getStatuts() === $this) {
-                $commande->setStatuts(null);
+            if ($commande->getStatut() === $this) {
+                $commande->setStatut(null);
             }
         }
 

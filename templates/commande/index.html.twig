@@ -1,0 +1,39 @@
+{# templates/commande/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des commandes{% endblock %}
+
+{% block body %}
+    <h1>Commandes</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Statut</th>
+                <th>Produits</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for commande in commandes %}
+                <tr>
+                    <td>{{ commande.id }}</td>
+                    <td>{{ commande.date|date('d/m/Y H:i') }}</td>
+                    <td>{{ commande.statut is not null ? commande.statut.statut : 'Aucun statut' }}</td>
+                    <td>
+                        <ul>
+                            {% for pc in commande.productCommande %}
+                                <li>{{ pc.name }} x{{ pc.quantity }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Aucune commande trouvée.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
