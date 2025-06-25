@@ -71,6 +71,7 @@ final class StripeController extends AbstractController
                 'currency' => 'eur',
                 'unit_amount' => $item['price'] * 100,
                 'product_data' => ['name' => $item['name']],
+                ''
             ]);
 
             $lineItems[] = [
