@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CommandeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
@@ -21,6 +23,17 @@ class Commande
 
     #[ORM\ManyToOne(inversedBy: 'Commande')]
     private ?Statuts $statuts = null;
+
+    /**
+     * @var Collection<int, ProductCommande>
+     */
+    #[ORM\OneToMany(targetEntity: ProductCommande::class, mappedBy: 'commande')]
+    private Collection $ProductCommande;
+
+    public function __construct()
+    {
+        $this->ProductCommande = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -59,6 +72,36 @@ class Commande
     public function setStatut(?Statuts $statuts): static
     {
         $this->statuts = $statuts;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProductCommande>
+     */
+    public function getProductCommande(): Collection
+    {
+        return $this->ProductCommande;
+    }
+
+    public function addProductCommande(ProductCommande $productCommande): static
+    {
+        if (!$this->ProductCommande->contains($productCommande)) {
+            $this->ProductCommande->add($productCommande);
+            $productCommande->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductCommande(ProductCommande $productCommande): static
+    {
+        if ($this->ProductCommande->removeElement($productCommande)) {
+            // set the owning side to null (unless already changed)
+            if ($productCommande->getCommande() === $this) {
+                $productCommande->setCommande(null);
+            }
+        }
 
         return $this;
     }

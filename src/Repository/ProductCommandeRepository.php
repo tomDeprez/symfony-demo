@@ -16,6 +16,23 @@ class ProductCommandeRepository extends ServiceEntityRepository
         parent::__construct($registry, ProductCommande::class);
     }
 
+    public function save(ProductCommande $ProductCommande, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($ProductCommande);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(ProductCommande $ProductCommande, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($ProductCommande);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
     //    /**
     //     * @return ProductCommande[] Returns an array of ProductCommande objects
     //     */

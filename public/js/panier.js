@@ -32,3 +32,25 @@ document.querySelectorAll('.add-to-cart-btn').forEach(button => {
 });
 
 updateCartCount();
+
+function sendOrder() {
+    let jsonOrder = JSON.parse(localStorage.getItem('cart'));
+    jsonOrder = JSON.stringify({'order':jsonOrder});
+
+    fetch("http://localhost:8000/stripe/create/link", {
+        method: "POST",
+        body: jsonOrder,
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.url) {
+                window.location.href = data.url;
+            } else {
+                console.error("URL de redirection manquante");
+            }
+        })
+        .catch(error => console.error("Erreur lors de la requête :", error));
+}

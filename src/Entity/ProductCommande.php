@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductCommandeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductCommandeRepository::class)]
@@ -21,6 +23,16 @@ class ProductCommande
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
+
+    #[ORM\ManyToOne(inversedBy: 'ProductCommande')]
+    private ?Commande $commande = null;
+
+    #[ORM\Column]
+    private ?int $quantity = null;
+
+    public function __construct()
+    {
+    }
 
     public function getId(): ?int
     {
@@ -59,6 +71,30 @@ class ProductCommande
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getCommande(): ?Commande
+    {
+        return $this->commande;
+    }
+
+    public function setCommande(?Commande $commande): static
+    {
+        $this->commande = $commande;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): static
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }

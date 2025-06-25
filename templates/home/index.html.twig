@@ -9,7 +9,7 @@
 {% block body %}
 <div class="container mt-4">
     <h3>Panier : <span id="cart-count">0</span> article(s)</h3>
-    <button class="btn btn-success">Payer mon panier</button>
+    <button class="btn btn-success" onclick="sendOrder()">Payer mon panier</button>
     <div class="row">
         {% for product in products %}
             <div class="col-md-3">
